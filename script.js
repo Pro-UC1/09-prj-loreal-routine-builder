@@ -49,9 +49,84 @@ categoryFilter.addEventListener("change", async (e) => {
   displayProducts(filteredProducts);
 });
 
-/* Chat form submission handler - placeholder for OpenAI integration */
-chatForm.addEventListener("submit", (e) => {
+/* Chat form submission handler - OpenAI API integration */
+chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  chatWindow.innerHTML = "Connect to the OpenAI API for a response!";
+  /* Get the user's message from the form input */
+  const formData = new FormData(e.target);
+  const userMessage = formData.get("message");
+
+  /* Check if message is empty */
+  if (!userMessage || userMessage.trim() === "") {
+    chatWindow.innerHTML = "Please enter a message.";
+    return;
+  }
+
+  /* Show loading message while waiting for API response */
+  chatWindow.innerHTML = "Getting AI response...";
+
+  try {
+    /* Make request to OpenAI API endpoint */
+    const response = await fetch(
+      "https://floral-leaf-ef4f.rneha2729.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "gpt-4o",
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are a helpful L'Oréal beauty and skincare advisor. Help users with product recommendations and routine building.",
+            },
+            {
+              role: "user",
+              content: userMessage,
+            },
+          ],
+          max_tokens: 500,
+          temperature: 0.7,
+        }),
+      }
+    );
+
+    /* Check if the response is ok */
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    /* Parse the JSON response from the API */
+    const data = await response.json();
+
+    /* Check if we got a valid response structure */
+    if (data.choices && data.choices[0] && data.choices[0].message) {
+      /* Display the AI's response in the chat window */
+      chatWindow.innerHTML = `
+        <div class="chat-message user-message">
+          <strong>You:</strong> ${userMessage}
+        </div>
+        <div class="chat-message ai-message">
+          <strong>AI Assistant:</strong> ${data.choices[0].message.content}
+        </div>
+      `;
+    } else {
+      throw new Error("Invalid response format from API");
+    }
+  } catch (error) {
+    /* Show detailed error message for debugging */
+    console.error("Full error details:", error);
+    chatWindow.innerHTML = `
+      <div class="error-message">
+        Sorry, there was an error getting a response. Please try again.
+        <br><small>Error: ${error.message}</small>
+      </div>
+    `;
+  }
+
+  /* Clear the form input after submission */
+  e.target.reset();
 });
