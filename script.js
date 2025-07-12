@@ -10,17 +10,6 @@ productsContainer.innerHTML = `
     Select a category to view products
   </div>
 `;
-let messages = [
-  {
-    role: "system",
-    content:
-      "You are a helpful L'Oréal beauty and skincare advisor. Help users with product recommendations and routine building.",
-  },
-  {
-    role: "user",
-    content: userMessage,
-  },
-];
 
 /* Load product data from JSON file */
 async function loadProducts() {
