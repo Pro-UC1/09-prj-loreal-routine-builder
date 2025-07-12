@@ -19,7 +19,7 @@ export default {
     const userInput = await request.json();
 
     const requestBody = {
-      model: "gpt-4o-search-preview",
+      model: "gpt-4o",
       messages: userInput.messages,
       max_completion_tokens: 200,
       temperature: 0.7,

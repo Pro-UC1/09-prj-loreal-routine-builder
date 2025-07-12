@@ -53,12 +53,12 @@ categoryFilter.addEventListener("change", async (e) => {
 chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  /* Get the user's message from the form input */
-  const formData = new FormData(e.target);
-  const userMessage = formData.get("message");
+  /* Get the user's message directly from the input element */
+  const userInput = document.getElementById("userInput");
+  const userMessage = userInput.value.trim();
 
   /* Check if message is empty */
-  if (!userMessage || userMessage.trim() === "") {
+  if (!userMessage || userMessage === "") {
     chatWindow.innerHTML = "Please enter a message.";
     return;
   }
@@ -128,5 +128,5 @@ chatForm.addEventListener("submit", async (e) => {
   }
 
   /* Clear the form input after submission */
-  e.target.reset();
+  userInput.value = "";
 });
