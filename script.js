@@ -68,7 +68,7 @@ chatForm.addEventListener("submit", async (e) => {
 
   try {
     /* Make request to OpenAI API endpoint */
-    const response = await fetch(
+    /*   const response = await fetch(
       "https://floral-leaf-ef4f.rneha2729.workers.dev/",
       {
         method: "POST",
@@ -93,7 +93,12 @@ chatForm.addEventListener("submit", async (e) => {
         }),
       }
     );
-
+*/
+    const response = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages }),
+    });
     /* Check if the response is ok */
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

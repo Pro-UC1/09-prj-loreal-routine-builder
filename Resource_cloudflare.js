@@ -23,7 +23,7 @@ export default {
       messages: userInput.messages,
       max_completion_tokens: 200,
       temperature: 0.7,
-     // frequency_penalty: 0.5,
+      frequency_penalty: 0.5,
     };
 
     const response = await fetch(apiUrl, {
