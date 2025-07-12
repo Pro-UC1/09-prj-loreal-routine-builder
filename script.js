@@ -90,8 +90,8 @@ chatForm.addEventListener("submit", async (e) => {
             },
           ],
           max_completion_tokens: 200,
-          temperature: 0.7,
-          frequency_penalty: 0.5,
+          //  temperature: 0.7,
+          //  frequency_penalty: 0.5,
         }),
       }
     );
